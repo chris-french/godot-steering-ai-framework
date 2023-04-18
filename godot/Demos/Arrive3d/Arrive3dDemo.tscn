@@ -6,11 +6,11 @@
 [ext_resource path="res://Demos/Arrive3d/Seeker.gd" type="Script" id=4]
 [ext_resource path="res://Demos/Arrive3d/SeekerMat.tres" type="Material" id=5]
 
-[sub_resource type="CapsuleShape" id=1]
+[sub_resource type="CapsuleShape3D" id=1]
 
 [sub_resource type="CapsuleMesh" id=2]
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="BoxMesh" id=3]
 material = ExtResource( 5 )
 size = Vector3( 0.5, 0.5, 1 )
 
@@ -19,16 +19,16 @@ top_radius = 2.0
 bottom_radius = 2.0
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="StandardMaterial3D" id=5]
 albedo_color = Color( 0.945098, 0.85098, 0.0745098, 1 )
 
-[sub_resource type="BoxShape" id=6]
-extents = Vector3( 1000, 0.1, 1000 )
+[sub_resource type="BoxShape3D" id=6]
+size = Vector3( 1000, 0.1, 1000 )
 
 [sub_resource type="PlaneMesh" id=7]
 size = Vector2( 250, 250 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="StandardMaterial3D" id=8]
 albedo_color = Color( 0.0941176, 0.235294, 0.486275, 1 )
 
 [node name="Arrive3dDemo" type="Node"]
@@ -39,54 +39,54 @@ deceleration_radius = 10.8
 angular_speed_max = 550
 angular_accel_max = 910
 
-[node name="Arriver" type="KinematicBody" parent="."]
+[node name="Arriver" type="CharacterBody3D" parent="."]
 script = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Arriver"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 1.5, 0 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arriver"]
+transform = Transform3D( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 1.5, 0 )
 shape = SubResource( 1 )
 
-[node name="Capsule" type="MeshInstance" parent="Arriver"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 1.5, 0 )
+[node name="Capsule" type="MeshInstance3D" parent="Arriver"]
+transform = Transform3D( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 1.5, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 5 )
 
-[node name="Nose" type="MeshInstance" parent="Arriver"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1.25 )
+[node name="Nose" type="MeshInstance3D" parent="Arriver"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 1.25 )
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.989952, 0.0720094, -0.121693, 0.0339305, 0.714503, 0.69881, 0.137271, -0.695917, 0.70488, -7.68317, 14.1265, 25.616 )
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D( 0.989952, 0.0720094, -0.121693, 0.0339305, 0.714503, 0.69881, 0.137271, -0.695917, 0.70488, -7.68317, 14.1265, 25.616 )
 current = true
 script = ExtResource( 2 )
 
-[node name="RayCast" type="RayCast" parent="Camera"]
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 enabled = true
-cast_to = Vector3( -627, 200, -777 )
+target_position = Vector3( -627, 200, -777 )
 collision_mask = 2
 
-[node name="MouseTarget" type="Spatial" parent="."]
-transform = Transform( 1, 0, 7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 1, -4.76837e-07, 9.53674e-07, 1.90735e-06 )
+[node name="MouseTarget" type="Node3D" parent="."]
+transform = Transform3D( 1, 0, 7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 1, -4.76837e-07, 9.53674e-07, 1.90735e-06 )
 
-[node name="MeshInstance" type="MeshInstance" parent="MouseTarget"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MouseTarget"]
 mesh = SubResource( 4 )
 material/0 = SubResource( 5 )
 
-[node name="StaticBody" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0 )
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource( 6 )
 
-[node name="Ground" type="MeshInstance" parent="."]
+[node name="Ground" type="MeshInstance3D" parent="."]
 mesh = SubResource( 7 )
 material/0 = SubResource( 8 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.588165, 0.462179, -0.663666, -0.804031, -0.245728, 0.541436, 0.087159, 0.852061, 0.516134, -17.6076, 12.1748, 0 )
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D( -0.588165, 0.462179, -0.663666, -0.804031, -0.245728, 0.541436, 0.087159, 0.852061, 0.516134, -17.6076, 12.1748, 0 )
 light_energy = 0.5
 shadow_enabled = true
 

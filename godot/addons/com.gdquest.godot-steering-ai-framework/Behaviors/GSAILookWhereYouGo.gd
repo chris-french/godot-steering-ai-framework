@@ -5,7 +5,8 @@ class_name GSAILookWhereYouGo
 extends GSAIMatchOrientation
 
 
-func _init(agent: GSAISteeringAgent, use_z := false).(agent, null, use_z) -> void:
+func _init(agent: GSAISteeringAgent, use_z := false) -> void:
+	super(agent, null, use_z)
 	pass
 
 

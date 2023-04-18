@@ -14,7 +14,8 @@ var _behaviors := []
 var _accel := GSAITargetAcceleration.new()
 
 
-func _init(agent: GSAISteeringAgent).(agent) -> void:
+func _init(agent: GSAISteeringAgent) -> void:
+	super(agent)
 	pass
 
 

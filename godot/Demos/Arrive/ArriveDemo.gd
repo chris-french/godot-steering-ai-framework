@@ -1,12 +1,12 @@
 extends Node
 
-export (float, 0, 3200, 100) var linear_speed_max := 800.0 setget set_linear_speed_max
-export (float, 0, 10000, 100) var linear_acceleration_max := 80.0 setget set_linear_acceleration_max
-export (float, 0, 100, 0.1) var arrival_tolerance := 25.0 setget set_arrival_tolerance
-export (float, 0, 500, 10) var deceleration_radius := 125.0 setget set_deceleration_radius
+@export (float, 0, 3200, 100) var linear_speed_max := 800.0: set = set_linear_speed_max
+@export (float, 0, 10000, 100) var linear_acceleration_max := 80.0: set = set_linear_acceleration_max
+@export (float, 0, 100, 0.1) var arrival_tolerance := 25.0: set = set_arrival_tolerance
+@export (float, 0, 500, 10) var deceleration_radius := 125.0: set = set_deceleration_radius
 
-onready var arriver := $Arriver
-onready var target_drawer := $TargetDrawer
+@onready var arriver := $Arriver
+@onready var target_drawer := $TargetDrawer
 
 
 func _ready() -> void:
@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.is_pressed():
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		arriver.target.position = Vector3(event.position.x, event.position.y, 0)
 		target_drawer.update()
 

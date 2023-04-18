@@ -5,8 +5,7 @@
 # strength decreasing by the inverse square law in relation to distance, and it
 # accumulates.
 # @category - Group behaviors
-class_name GSAISeparation
-extends GSAIGroupBehavior
+class_name GSAISeparation extends GSAIGroupBehavior
 
 # The coefficient to calculate how fast the separation strength decays with distance.
 var decay_coefficient := 1.0
@@ -14,7 +13,8 @@ var decay_coefficient := 1.0
 var _acceleration: GSAITargetAcceleration
 
 
-func _init(agent: GSAISteeringAgent, proximity: GSAIProximity).(agent, proximity) -> void:
+func _init(agent: GSAISteeringAgent, proximity: GSAIProximity) -> void:
+	super(agent, proximity)
 	pass
 
 

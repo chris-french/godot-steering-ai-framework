@@ -1,17 +1,17 @@
-extends KinematicBody2D
+extends CharacterBody2D
 # Controls the player ship's movements based on player input.
 
-export var thruster_strength := 175.0
-export var side_thruster_strength := 10.0
-export var velocity_max := 300.0
-export var angular_velocity_max := 2.0
-export var angular_drag := 0.025
-export var linear_drag := 0.025
+@export var thruster_strength := 175.0
+@export var side_thruster_strength := 10.0
+@export var velocity_max := 300.0
+@export var angular_velocity_max := 2.0
+@export var angular_drag := 0.025
+@export var linear_drag := 0.025
 
 var _linear_velocity := Vector2()
 var _angular_velocity := 0.0
 
-onready var agent := GSAISteeringAgent.new()
+@onready var agent := GSAISteeringAgent.new()
 
 
 func _physics_process(delta: float) -> void:
@@ -36,7 +36,9 @@ func _physics_process(delta: float) -> void:
 		delta
 	)
 
-	_linear_velocity = move_and_slide(_linear_velocity)
+	set_velocity(_linear_velocity)
+	move_and_slide()
+	_linear_velocity = velocity
 	_update_agent()
 
 
@@ -75,9 +77,9 @@ func _calculate_linear_velocity(
 		actual_strength = -strength / 1.5
 
 	var velocity := current_velocity + facing_direction * actual_strength * delta
-	velocity = velocity.linear_interpolate(Vector2.ZERO, ship_drag_coefficient)
+	velocity = velocity.lerp(Vector2.ZERO, ship_drag_coefficient)
 
-	return velocity.clamped(speed_max)
+	return velocity.limit_length(speed_max)
 
 
 func _get_movement() -> Vector2:

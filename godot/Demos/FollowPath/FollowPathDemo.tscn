@@ -21,7 +21,7 @@ deceleration_radius = 200.0
 [node name="Drawer" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
-[node name="PathFollower" type="KinematicBody2D" parent="."]
+[node name="PathFollower" type="CharacterBody2D" parent="."]
 position = Vector2( 960, 540 )
 script = ExtResource( 3 )
 
@@ -33,5 +33,5 @@ outer_color = Color( 0.560784, 0.870588, 0.364706, 1 )
 stroke = 6.0
 
 [node name="DemoInterface" parent="." instance=ExtResource( 2 )]
-text_bbcode = "Follow Path Demo
+text_bbcode = "Follow Path3D Demo
 Use the mouse to draw a path on screen and watch the [color=lime]green \"Agent\"[/color] follow it to the end."

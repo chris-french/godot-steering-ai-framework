@@ -10,7 +10,7 @@ class_name GSAIKinematicBody2DAgent
 enum MovementType { SLIDE, COLLIDE, POSITION }
 
 # The KinematicBody2D to keep track of
-var body: KinematicBody2D setget _set_body
+var body: CharacterBody2D: set = _set_body
 
 # The type of movement the body executes
 var movement_type: int
@@ -19,15 +19,15 @@ var _last_position: Vector2
 var _body_ref: WeakRef
 
 
-func _init(_body: KinematicBody2D, _movement_type: int = MovementType.SLIDE) -> void:
+func _init(_body: CharacterBody2D, _movement_type: int = MovementType.SLIDE) -> void:
 	if not _body.is_inside_tree():
-		yield(_body, "ready")
+		await _body.ready
 
 	self.body = _body
 	self.movement_type = _movement_type
 
 	# warning-ignore:return_value_discarded
-	_body.get_tree().connect("physics_frame", self, "_on_SceneTree_physics_frame")
+	_body.get_tree().connect("physics_frame", Callable(self, "_on_SceneTree_physics_frame"))
 
 
 # Moves the agent's `body` by target `acceleration`.
@@ -46,29 +46,31 @@ func _apply_steering(acceleration: GSAITargetAcceleration, delta: float) -> void
 
 
 func _apply_sliding_steering(accel: Vector3, delta: float) -> void:
-	var _body: KinematicBody2D = _body_ref.get_ref()
+	var _body: CharacterBody2D = _body_ref.get_ref()
 	if not _body:
 		return
 
 	if not _body.is_inside_tree() or _body.get_tree().paused:
 		return
-		
-	var velocity := GSAIUtils.to_vector2(linear_velocity + accel * delta).clamped(linear_speed_max)
+
+	var velocity := GSAIUtils.to_vector2(linear_velocity + accel * delta).limit_length(linear_speed_max)
 	if apply_linear_drag:
-		velocity = velocity.linear_interpolate(Vector2.ZERO, linear_drag_percentage)
-	velocity = _body.move_and_slide(velocity)
+		velocity = velocity.lerp(Vector2.ZERO, linear_drag_percentage)
+	_body.set_velocity(velocity)
+	_body.move_and_slide()
+	velocity = _body.velocity
 	if calculate_velocities:
 		linear_velocity = GSAIUtils.to_vector3(velocity)
 
 
 func _apply_collide_steering(accel: Vector3, delta: float) -> void:
-	var _body: KinematicBody2D = _body_ref.get_ref()
+	var _body: CharacterBody2D = _body_ref.get_ref()
 	if not _body:
 		return
-		
+
 	var velocity := GSAIUtils.clampedv3(linear_velocity + accel * delta, linear_speed_max)
 	if apply_linear_drag:
-		velocity = velocity.linear_interpolate(Vector3.ZERO, linear_drag_percentage)
+		velocity = velocity.lerp(Vector3.ZERO, linear_drag_percentage)
 	# warning-ignore:return_value_discarded
 	_body.move_and_collide(GSAIUtils.to_vector2(velocity) * delta)
 	if calculate_velocities:
@@ -76,23 +78,23 @@ func _apply_collide_steering(accel: Vector3, delta: float) -> void:
 
 
 func _apply_position_steering(accel: Vector3, delta: float) -> void:
-	var _body: KinematicBody2D = _body_ref.get_ref()
+	var _body: CharacterBody2D = _body_ref.get_ref()
 	if not _body:
 		return
-		
+
 	var velocity := GSAIUtils.clampedv3(linear_velocity + accel * delta, linear_speed_max)
 	if apply_linear_drag:
-		velocity = velocity.linear_interpolate(Vector3.ZERO, linear_drag_percentage)
+		velocity = velocity.lerp(Vector3.ZERO, linear_drag_percentage)
 	_body.global_position += GSAIUtils.to_vector2(velocity) * delta
 	if calculate_velocities:
 		linear_velocity = velocity
 
 
 func _apply_orientation_steering(angular_acceleration: float, delta: float) -> void:
-	var _body: KinematicBody2D = _body_ref.get_ref()
+	var _body: CharacterBody2D = _body_ref.get_ref()
 	if not _body:
 		return
-		
+
 	var velocity = clamp(
 		angular_velocity + angular_acceleration * delta,
 		-angular_speed_max,
@@ -105,7 +107,7 @@ func _apply_orientation_steering(angular_acceleration: float, delta: float) -> v
 		angular_velocity = velocity
 
 
-func _set_body(value: KinematicBody2D) -> void:
+func _set_body(value: CharacterBody2D) -> void:
 	body = value
 	_body_ref = weakref(body)
 
@@ -117,10 +119,10 @@ func _set_body(value: KinematicBody2D) -> void:
 
 
 func _on_SceneTree_physics_frame() -> void:
-	var _body: KinematicBody2D = _body_ref.get_ref()
+	var _body: CharacterBody2D = _body_ref.get_ref()
 	if not _body:
 		return
-	
+
 	var current_position := _body.global_position
 	var current_orientation := _body.rotation
 
@@ -135,7 +137,7 @@ func _on_SceneTree_physics_frame() -> void:
 				GSAIUtils.to_vector3(current_position - _last_position), linear_speed_max
 			)
 			if apply_linear_drag:
-				linear_velocity = linear_velocity.linear_interpolate(
+				linear_velocity = linear_velocity.lerp(
 					Vector3.ZERO, linear_drag_percentage
 				)
 

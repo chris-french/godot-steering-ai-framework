@@ -2,7 +2,7 @@
 # follow behaviors can use.
 # @category - Base types
 class_name GSAIPath
-extends Reference
+extends RefCounted
 
 # If `false`, the path loops.
 var is_open: bool
@@ -24,7 +24,7 @@ func _init(waypoints: Array, _is_open := false) -> void:
 
 # Creates a path from a list of waypoints.
 func create_path(waypoints: Array) -> void:
-	if not waypoints or waypoints.size() < 2:
+	if (waypoints == null) or waypoints.size() < 2:
 		printerr("Waypoints cannot be null and must contain at least two (2) waypoints.")
 		return
 

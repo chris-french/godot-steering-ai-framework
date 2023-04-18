@@ -13,7 +13,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			active_points.append(event.position)
 			update()
 	elif event is InputEventMouseButton:
-		if event.pressed and event.button_index == BUTTON_LEFT:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			active_points.clear()
 			active_points.append(event.position)
 			is_drawing = true
@@ -27,12 +27,12 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw() -> void:
 	if is_drawing:
 		for point in active_points:
-			draw_circle(point, 2, Color.red)
+			draw_circle(point, 2, Color.RED)
 	else:
 		if active_points.size() > 0:
-			draw_circle(active_points.front(), 2, Color.red)
-			draw_circle(active_points.back(), 2, Color.yellow)
-			draw_polyline(active_points, Color.skyblue, 1.0)
+			draw_circle(active_points.front(), 2, Color.RED)
+			draw_circle(active_points.back(), 2, Color.YELLOW)
+			draw_polyline(active_points, Color.SKY_BLUE, 1.0)
 
 
 func _simplify() -> void:

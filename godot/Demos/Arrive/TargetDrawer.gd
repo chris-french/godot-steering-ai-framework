@@ -9,7 +9,7 @@ var arriver: Node2D
 
 
 func _ready() -> void:
-	yield(owner, "ready")
+	await owner.ready
 	arriver = owner.arriver
 
 

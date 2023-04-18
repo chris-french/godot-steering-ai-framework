@@ -22,7 +22,7 @@ static func vector2_to_angle(vector: Vector2) -> float:
 	return atan2(vector.x, -vector.y)
 
 # Returns a directional vector from the given orientation angle.
-# 
+#
 # This assumes orientation for 2D agents or 3D agents that are upright and
 # rotate around the Y axis.
 static func angle_to_vector2(angle: float) -> Vector2:

@@ -6,11 +6,13 @@ extends GSAISteeringBehavior
 # Container to find neighbors of the agent and calculate group behavior.
 var proximity: GSAIProximity
 
-var _callback := funcref(self, "_report_neighbor")
+var _callback: Callable
 
 
-func _init(agent: GSAISteeringAgent, _proximity: GSAIProximity).(agent) -> void:
+func _init(agent: GSAISteeringAgent, _proximity: GSAIProximity) -> void:
+	super(agent)
 	self.proximity = _proximity
+	_callback = _report_neighbor
 
 
 # Internal callback for the behavior to define whether or not a member is

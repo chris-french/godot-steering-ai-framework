@@ -22,7 +22,7 @@ deceleration_radius = 180.0
 [node name="TargetDrawer" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
-[node name="Arriver" type="KinematicBody2D" parent="."]
+[node name="Arriver" type="CharacterBody2D" parent="."]
 show_behind_parent = true
 position = Vector2( 960, 540 )
 script = ExtResource( 1 )

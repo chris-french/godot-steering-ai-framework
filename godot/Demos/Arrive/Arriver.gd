@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var agent := GSAIKinematicBody2DAgent.new(self)
 var target := GSAIAgentLocation.new()

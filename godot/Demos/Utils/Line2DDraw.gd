@@ -1,7 +1,7 @@
-tool
+@tool
 extends Line2D
 
-export (Color) var inner_color := Color() setget set_inner_color
+@export (Color) var inner_color := Color(): set = set_inner_color
 
 
 func _draw() -> void:

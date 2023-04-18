@@ -1,5 +1,8 @@
 # Godot Steering AI Framework
 
+__NOTE:__ This is a fork of the original project to work with Godot 4.1 dev.
+
+
 ![Project banner](./assets/banner.svg)
 
 This project is a framework to code complex and smooth AI movement in the [Godot game engine](https://godotengine.org/), in GDScript, using steering behaviors. It works in **both 2D and 3D games**.
